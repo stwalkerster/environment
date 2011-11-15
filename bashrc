@@ -61,6 +61,7 @@ fi
 
 
 . ~/environment/bash-completion-git
+. ~/environment/git-status-colours
 
 # colour prompt:
 #PS1="\[\e]0;\u@\h: \w\a\]\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]\$ "
