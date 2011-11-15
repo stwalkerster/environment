@@ -64,7 +64,7 @@ fi
 
 # colour prompt:
 #PS1="\[\e]0;\u@\h: \w\a\]\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]\$ "
-export PS1='\n\[\e]2;\u@\h:\w\a\]\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[\e[1;33m%s\e[m]")\n\$ '
+export PS1='\n\[\e]2;\u@\h:\w\a\]\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m]")\n\$ '
 export EDITOR=/usr/bin/nano
 export VISUAL=/usr/bin/nano
 export PATH=$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin/svn2git
