@@ -20,13 +20,17 @@ $ echo ". ~/environment/bashrc" >> ~/.bashrc
 The prompt is changed to the following:
 
 ```
-[hh:mm:ss][user@host:workingdir]$
+
+[hh:mm:ss][user@host:workingdir]
+$
 ```
 
 If you are in a git repository, the following is the prompt
 
 ```
-[hh:mm:ss][user@host:workingdir][branch][421]$
+
+[hh:mm:ss][user@host:workingdir][branch][421]
+$
 ```
 
 The colour of the branch bit is as follows, in order of priority:
