@@ -57,7 +57,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-export EDITOR=/usr/bin/vim
-export VISUAL=/usr/bin/vim
+export EDITOR=/usr/bin/nano
+export VISUAL=/usr/bin/nano
 export PATH=$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin/svn2git
 export PYTHONPATH="/usr/local/lib/svn-python":="/usr/local/lib/svn-python/svn":="/usr/local/lib/svn-python/libsvn"
