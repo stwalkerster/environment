@@ -58,6 +58,7 @@ alias pull='git pull'
 
 alias reload=". ~/environment/bashrc"
 
+alias cde="cd ~/environment"
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
