@@ -24,12 +24,40 @@ shopt -s checkwinsize
 # include my specific git functions
 . ~/environment/git-status-colours
 
+# set the prompt
+PS1='\n\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")\n\$ '
 
-# colour prompt:
-export PS1='\n\[\e]2;\u@\h:\w\a\]\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m]")\n\$ '
+# If this is an xterm set the title
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]2;\u@\h:\w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -l'
+alias la='ls -A'
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
 
 export EDITOR=/usr/bin/vim
 export VISUAL=/usr/bin/vim
-
 export PATH=$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin/svn2git
 export PYTHONPATH="/usr/local/lib/svn-python":="/usr/local/lib/svn-python/svn":="/usr/local/lib/svn-python/libsvn"
