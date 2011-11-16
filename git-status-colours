@@ -16,17 +16,17 @@ function __stw_get_git_wd_untracked
 
 function __stw_get_git_num_unstaged
 {
-	git diff --name-only | wc -l;
+	git diff --name-only 2> /dev/null | wc -l;
 }
 
 function __stw_get_git_num_staged
 {
-	git diff --name-only --cached | wc -l
+	git diff --name-only --cached 2> /dev/null | wc -l
 }
 
 function __stw_get_git_num_untracked
 {
-	git ls-files -o | wc -l
+	git ls-files -o 2> /dev/null | wc -l
 }
 
 function __stw_git_status
