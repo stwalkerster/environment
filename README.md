@@ -13,7 +13,7 @@ In commands, this means:
 $ cd
 $ git clone git://github.com/stwalkerster/environment.git environment
 $ echo ". ~/environment/bashrc" >> ~/.bashrc
-
+```
 
 ## Explanation ##
 
