@@ -55,6 +55,7 @@ alias add='git add'
 alias commit='git commit'
 alias push='git push'
 alias pull='git pull'
+alias stash='git stash'
 
 alias reload=". ~/environment/bashrc"
 
