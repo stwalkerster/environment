@@ -64,7 +64,7 @@ fi
 . ~/environment/git-status-colours
 
 # colour prompt:
-export PS1='\n\[\e]2;\u@\h:\w\a\]\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[\e[0;35m%s\e[m]$(__stw_git_numeric_status)")\n\$ '
+export PS1='\n\[\e]2;\u@\h:\w\a\]\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m]$(__stw_git_numeric_status)")\n\$ '
 
 export EDITOR=/usr/bin/nano
 export VISUAL=/usr/bin/nano

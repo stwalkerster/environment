@@ -71,7 +71,7 @@ function __stw_git_numeric_status
 
 	if [ `__stw_get_git_num_unstaged` != "0" ] 
 		then
-		OUTPUT=$OUTPUT"\e[0;31m$(__stw_get_git_num_unstaged)"
+		OUTPUT=$OUTPUT"\e[1;31m$(__stw_get_git_num_unstaged)"
 	fi
 
         if [ `__stw_get_git_num_staged` != "0" ] 
@@ -81,7 +81,7 @@ function __stw_git_numeric_status
 
         if [ `__stw_get_git_num_untracked` != "0" ] 
 		then
-                OUTPUT=$OUTPUT"\e[0;34m$(__stw_get_git_num_untracked)"
+                OUTPUT=$OUTPUT"\e[1;34m$(__stw_get_git_num_untracked)"
         fi
 
 	if [ $OUTPUT != "[" ]
