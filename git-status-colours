@@ -84,7 +84,11 @@ function __stw_git_numeric_status
                 OUTPUT=$OUTPUT"\e[0;34m$(__stw_get_git_num_untracked)"
         fi
 
-	OUTPUT=$OUTPUT"\e[m]"
-	echo $OUTPUT	
+	if [ $OUTPUT != "[" ]
+		then
+		OUTPUT=$OUTPUT"\e[m]"
+		echo $OUTPUT	
+	fi
+
 	return
 }
