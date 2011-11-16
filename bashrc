@@ -25,7 +25,7 @@ shopt -s checkwinsize
 . ~/environment/git-status-colours
 
 # set the prompt
-PS1='\n\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m]$(__stw_git_numeric_status)")\n\$ '
+PS1='\n\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")\n\$ '
 
 # If this is an xterm set the title
 case "$TERM" in

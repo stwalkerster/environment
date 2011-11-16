@@ -29,6 +29,11 @@ function __stw_get_git_num_untracked
 	git ls-files -o --exclude-standard 2> /dev/null | wc -l
 }
 
+function __stw_get_git_num_stash
+{
+	git stash list 2> /dev/null | wc -l
+}
+
 function __stw_git_status
 {
 	if [ `__stw_get_git_wd_unstaged` == "1" ]
@@ -88,6 +93,16 @@ function __stw_git_numeric_status
 		then
 		OUTPUT=$OUTPUT"\e[m]"
 		echo $OUTPUT	
+	fi
+
+	return
+}
+
+function __stw_get_git_stash_status
+{
+	if [ `__stw_get_git_num_stash` != "0" ]
+		then
+		echo "[\e[0;36m$(__stw_get_git_num_stash)\e[m]"
 	fi
 
 	return
