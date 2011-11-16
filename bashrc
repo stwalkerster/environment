@@ -50,6 +50,13 @@ fi
 alias ll='ls -l'
 alias la='ls -A'
 
+alias status='git status'
+alias add='git add'
+alias commit='git commit'
+alias push='git push'
+alias pull='git pull'
+
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
