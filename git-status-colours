@@ -26,7 +26,7 @@ function __stw_get_git_num_staged
 
 function __stw_get_git_num_untracked
 {
-	git ls-files -o 2> /dev/null | wc -l
+	git ls-files -o --exclude-standard 2> /dev/null | wc -l
 }
 
 function __stw_git_status
