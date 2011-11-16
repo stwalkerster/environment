@@ -56,6 +56,8 @@ alias commit='git commit'
 alias push='git push'
 alias pull='git pull'
 
+alias reload=". ~/environment/bashrc"
+
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
