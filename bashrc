@@ -1,76 +1,63 @@
-## /etc/bashrc
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
 
-# System wide functions and aliases
-# Environment stuff goes in /etc/profile
+# don't put duplicate lines in the history. See bash(1) for more options
+# ... or force ignoredups and ignorespace
+HISTCONTROL=ignoredups:ignorespace
 
-# By default, we want this to get set.
-# Even for non-interactive, non-login shells.
-if [ $UID -gt 99 ] && [ "`id -gn`" = "`id -un`" ]; then
-	umask 002
-else
-	umask 022
-fi
+# append to the history file, don't overwrite it
+shopt -s histappend
 
-# are we an interactive shell?
-if [ "$PS1" ]; then
-    case $TERM in
-	xterm*)
-		if [ -e /etc/sysconfig/bash-prompt-xterm ]; then
-			PROMPT_COMMAND=/etc/sysconfig/bash-prompt-xterm
-		else
-	    	PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}"; echo -ne "\007"'
-		fi
-		;;
-	screen)
-		if [ -e /etc/sysconfig/bash-prompt-screen ]; then
-			PROMPT_COMMAND=/etc/sysconfig/bash-prompt-screen
-		else
-		PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}"; echo -ne "\033\\"'
-		fi
-		;;
-	*)
-		[ -e /etc/sysconfig/bash-prompt-default ] && PROMPT_COMMAND=/etc/sysconfig/bash-prompt-default
-	    ;;
-    esac
-    # Turn on checkwinsize
-    shopt -s checkwinsize
-    [ "$PS1" = "\\s-\\v\\\$ " ] && PS1="[\u@\h \W]\\$ "
-fi
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
 
-if ! shopt -q login_shell ; then # We're not a login shell
-	# Need to redefine pathmunge, it get's undefined at the end of /etc/profile
-    pathmunge () {
-		if ! echo $PATH | /bin/egrep -q "(^|:)$1($|:)" ; then
-			if [ "$2" = "after" ] ; then
-				PATH=$PATH:$1
-			else
-				PATH=$1:$PATH
-			fi
-		fi
-	}
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
 
-	for i in /etc/profile.d/*.sh; do
-		if [ -r "$i" ]; then
-			. $i
-	fi
-	done
-	unset i
-	unset pathmunge
-fi
-# vim:ts=4:sw=4
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-
+# include bash completion for git on the off-chance we don't already have it
 . ~/environment/bash-completion-git
+# include my specific git functions
 . ~/environment/git-status-colours
 
-# colour prompt:
-export PS1='\n\[\e]2;\u@\h:\w\a\]\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m]$(__stw_git_numeric_status)")\n\$ '
+# set the prompt
+PS1='\n\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m]$(__stw_git_numeric_status)")\n\$ '
+
+# If this is an xterm set the title
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]2;\u@\h:\w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -l'
+alias la='ls -A'
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
 
 export EDITOR=/usr/bin/nano
 export VISUAL=/usr/bin/nano
 export PATH=$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin/svn2git
-
 export PYTHONPATH="/usr/local/lib/svn-python":="/usr/local/lib/svn-python/svn":="/usr/local/lib/svn-python/libsvn"
-
-alias ls="ls --color"
-alias ll="ls -l --color";
