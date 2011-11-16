@@ -2,10 +2,10 @@ This is my bash configuration and stuff.
 
 ## Installation: ##
 
-# Clone the repo to ~/environment
-# Source the file from .bashrc (and maybe .bash_profile)
-# ???
-# Profit!
+1. Clone the repo to ~/environment
+1. Source the file from .bashrc (and maybe .bash_profile)
+1. ???
+1. Profit!
 
 In commands, this means:
 
