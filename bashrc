@@ -25,7 +25,7 @@ shopt -s checkwinsize
 . ~/environment/git-status-colours
 
 # set the prompt
-PS1='\n\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")\n\$ '
+PS1='\n\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")\nbash \$ '
 
 # If this is an xterm set the title
 case "$TERM" in
@@ -65,6 +65,9 @@ alias makeloop='while true; do make; ./project ; sleep 1; done'
 
 alias c=clear
 
+alias scr='screen -r'
+alias scrd='screen -rd'
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -77,5 +80,5 @@ fi
 
 export EDITOR=/usr/bin/nano
 export VISUAL=/usr/bin/nano
-export PATH=$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin/svn2git
+export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin/svn2git
 export PYTHONPATH="/usr/local/lib/svn-python":="/usr/local/lib/svn-python/svn":="/usr/local/lib/svn-python/libsvn"
