@@ -83,7 +83,7 @@ alias scrd='~/environment/grabssh; screen -rd'
 
 alias screnum='~/environment/screnum'
 
-alias ssh='source ~/environment/fixssh; ssh'
+alias ssh='source ~/environment/fixssh; ssh -A'
 alias fixssh='source ~/environment/fixssh'
 
 # enable programmable completion features (you don't need to enable
