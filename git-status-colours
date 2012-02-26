@@ -1,4 +1,9 @@
 
+function __stw_get_git_rev_name
+{
+	git describe --always 2> /dev/null
+}
+
 function __stw_get_git_wd_unstaged
 {
 	git status 2> /dev/null | sed -e '/Changes not staged for commit:$/!d' | wc -l;
