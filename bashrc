@@ -78,10 +78,13 @@ alias makeloop='while true; do make; ./project ; sleep 1; done'
 
 alias c=clear
 
-alias scr='screen -r'
-alias scrd='screen -rd'
+alias scr='~/environment/grabssh; screen -r'
+alias scrd='~/environment/grabssh; screen -rd'
 
 alias screnum='~/environment/screnum'
+
+alias ssh='source ~/environment/fixssh; ssh'
+alias fixssh='source ~/environment/fixssh'
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
