@@ -86,6 +86,8 @@ alias screnum='~/environment/screnum'
 alias ssh='source ~/environment/fixssh; ssh -A'
 alias fixssh='source ~/environment/fixssh'
 
+alias envupdate='pushd ~/environment/; git pull; source bashrc; popd'
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
