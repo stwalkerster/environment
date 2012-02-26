@@ -100,5 +100,5 @@ fi
 
 export EDITOR=/usr/bin/nano
 export VISUAL=/usr/bin/nano
-export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin/
+export PATH=$HOME/bin:$HOME/sml:$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin
 export PYTHONPATH="/usr/local/lib/svn-python":="/usr/local/lib/svn-python/svn":="/usr/local/lib/svn-python/libsvn"
