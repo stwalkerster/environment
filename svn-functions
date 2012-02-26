@@ -1,0 +1,8 @@
+function __stw_svn_status
+{
+	svnV=`svnversion`
+	if [ "$svnV" != "exported" ]
+		then
+		printf "[\e[1;34msvn\e[m: \e[1;35m%s\e[m]" $svnV
+	fi
+}
