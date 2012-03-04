@@ -24,15 +24,23 @@ shopt -s checkwinsize
 # include my specific git functions
 . ~/environment/git-status-colours
 
-# set the prompt
-PS1='\n\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")\nbash \$ '
+# set the prompt 
+PS1='\n\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]'
+
 
 # If this is an xterm set the title
 case "$TERM" in
+cygwin)
+	PS1="$PS1$(__git_ps1)\nbash \$ "
+	;;
 xterm*|rxvt*)
+	PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")'
+	PS1="$PS1\nbash \$ "
     PS1="\[\e]2;\u@\h:\w\a\]$PS1"
     ;;
 *)
+	PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")'
+	PS1="$PS1\nbash \$ "
     ;;
 esac
 
