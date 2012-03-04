@@ -1,0 +1,26 @@
+alias r="remote"
+
+function remote
+{
+	SSH_COMMAND="ssh"
+
+	if [ `ssh-add -l | wc -l` != "1" ]
+		then
+		ssh-add
+	fi
+
+	case $1 in
+	blastoise)
+		$SSH_COMMAND stwalkerster@blastoise.helpmebot.org.uk
+		;;
+	metapod)
+		$SSH_COMMAND stwalkerster@metapod.helpmebot.org.uk
+		;;
+	jove)
+		$SSH_COMMAND stw3@jove.macs.hw.ac.uk
+		;;
+	*)
+		$SSH_COMMAND $1
+		;;
+	esac
+}

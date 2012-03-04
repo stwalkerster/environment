@@ -85,6 +85,9 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+# include the remote ssh command thingamabobby
+. ~/environment/remotes
+
 export EDITOR=/usr/bin/nano
 export VISUAL=/usr/bin/nano
 export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin/
