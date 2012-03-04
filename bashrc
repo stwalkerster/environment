@@ -76,6 +76,8 @@ alias c=clear
 alias scr='screen -r'
 alias scrd='screen -rd'
 
+alias screnum='~/environment/screnum'
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -85,5 +87,5 @@ fi
 
 export EDITOR=/usr/bin/nano
 export VISUAL=/usr/bin/nano
-export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin/svn2git
+export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin/
 export PYTHONPATH="/usr/local/lib/svn-python":="/usr/local/lib/svn-python/svn":="/usr/local/lib/svn-python/libsvn"
