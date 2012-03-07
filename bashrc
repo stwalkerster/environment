@@ -72,8 +72,6 @@ alias cde="cd ~/environment"
 
 alias makeloop='while true; do make; ./project ; sleep 1; done'
 
-alias c=clear
-
 alias scr='~/environment/grabssh; screen -r'
 alias scrd='~/environment/grabssh; screen -rd'
 
