@@ -38,22 +38,35 @@ xterm*|rxvt*)
 	PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")$(__stw_svn_status)'
 	PS1="$PS1\nbash \$ "
     PS1="\[\e]2;\u@\h:\w\a\]$PS1"
+		
+	# enable color support of ls and also add handy aliases
+	if [ -x $(which dircolors) ]; then
+		test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+		alias ls='ls --color=auto'
+
+		alias grep='grep --color=auto'
+		alias fgrep='fgrep --color=auto'
+		alias egrep='egrep --color=auto'
+	fi
     ;;
 *)
 	PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")$(__stw_svn_status)'
 	PS1="$PS1\nbash \$ "
+	
+	# enable color support of ls and also add handy aliases
+	if [ -x $(which dircolors) ]; then
+		test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+		alias ls='ls --color=auto'
+
+		alias grep='grep --color=auto'
+		alias fgrep='fgrep --color=auto'
+		alias egrep='egrep --color=auto'
+	fi
     ;;
 esac
 
-# enable color support of ls and also add handy aliases
-if [ -x $(which dircolors) ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
+
 
 # some more ls aliases
 alias ll='ls -l'
