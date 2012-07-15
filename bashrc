@@ -21,10 +21,121 @@ shopt -s checkwinsize
 
 # include bash completion for git on the off-chance we don't already have it
 . ~/environment/bash-completion-git
-# include my specific git functions
-. ~/environment/git-status-colours
-# include my svn function stoo
-. ~/environment/svn-functions
+
+function __stw_get_git_rev_name
+{
+        git describe --always 2> /dev/null
+}
+
+function __stw_get_git_wd_unstaged
+{
+        git status 2> /dev/null | sed -e '/Changes not staged for commit:$/!d' | wc -l;
+}
+
+function __stw_get_git_wd_staged
+{
+        git status 2> /dev/null | sed -e '/Changes to be committed:$/!d' | wc -l;
+}
+
+function __stw_get_git_wd_untracked
+{
+        git status 2> /dev/null | sed -e '/Untracked files:$/!d' | wc -l;
+}
+
+function __stw_get_git_num_unstaged
+{
+        git diff --name-only 2> /dev/null | wc -l;
+}
+
+function __stw_get_git_num_staged
+{
+        git diff --name-only --cached 2> /dev/null | wc -l
+}
+
+function __stw_get_git_num_untracked
+{
+        git ls-files -o --exclude-standard 2> /dev/null | wc -l
+}
+
+function __stw_get_git_num_stash
+{
+        git stash list 2> /dev/null | wc -l
+}
+
+function __stw_git_status
+{
+        if [ `__stw_get_git_wd_unstaged` == "1" ]
+                then
+                        echo "\e[1;31m"
+                        return
+        fi
+
+        if [ `__stw_get_git_wd_staged` == "1" ]
+                then
+                        echo "\e[1;33m"
+                        return
+        fi
+
+        if [ `__stw_get_git_wd_untracked` == "1" ]
+                then
+                        echo "\e[1;34m"
+                        return
+        fi
+
+        echo "\e[1;32m"
+}
+
+function __stw_git_numeric_status
+{
+        OUTPUT="["
+
+        if [ `__stw_get_git_num_unstaged` != "0" ]
+                then
+                OUTPUT=$OUTPUT"\e[1;31m$(__stw_get_git_num_unstaged)"
+        fi
+
+        if [ `__stw_get_git_num_staged` != "0" ]
+                then
+                OUTPUT=$OUTPUT"\e[1;33m$(__stw_get_git_num_staged)"
+        fi
+
+        if [ `__stw_get_git_num_untracked` != "0" ]
+                then
+                OUTPUT=$OUTPUT"\e[1;34m$(__stw_get_git_num_untracked)"
+        fi
+
+        if [ "$OUTPUT" != "[" ]
+                then
+                OUTPUT=$OUTPUT"\e[m]"
+                echo $OUTPUT
+        fi
+
+        return
+}
+
+function __stw_get_git_stash_status
+{
+        if [ `__stw_get_git_num_stash` != "0" ]
+                then
+                echo "[\e[0;36m$(__stw_get_git_num_stash)\e[m]"
+        fi
+
+        return
+}
+
+
+function __stw_svn_status
+{
+        svnV=`svnversion 2>/dev/null`
+
+        if [ -n "$svnV" ]; then
+                if [ "$svnV" != "exported" ]
+                        then
+                        printf "[\e[1;34msvn\e[m: \e[1;35m%s\e[m]" $svnV
+                fi
+        fi
+}
+
 
 # set the prompt 
 PS1='\n\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]'
