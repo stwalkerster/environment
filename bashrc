@@ -79,12 +79,6 @@ alias push='git push'
 alias pull='git pull'
 alias stash='git stash'
 
-alias reload=". ~/environment/bashrc"
-
-alias cde="cd ~/environment"
-
-alias makeloop='while true; do make; ./project ; sleep 1; done'
-
 alias scr='~/environment/grabssh; screen -r'
 alias scrd='~/environment/grabssh; screen -rd'
 
@@ -101,9 +95,6 @@ alias envupdate='pushd ~/environment/; git pull; source bashrc; popd'
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
-
-# include the remote ssh command thingamabobby
-. ~/environment/remotes
 
 export EDITOR=nano
 export VISUAL=/usr/bin/nano
