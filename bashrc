@@ -124,17 +124,6 @@ function __stw_get_git_stash_status
 }
 
 
-function __stw_svn_status
-{
-        svnV=`svnversion 2>/dev/null`
-
-        if [ -n "$svnV" ]; then
-                if [ "$svnV" != "exported" ]
-                        then
-                        printf "[\e[1;34msvn\e[m: \e[1;35m%s\e[m]" $svnV
-                fi
-        fi
-}
 
 
 # set the prompt 
@@ -146,7 +135,7 @@ cygwin)
 	PS1=$PS1'$(__git_ps1 "[%s:$(__stw_get_git_rev_name)]")\nbash \$ '
 	;;
 xterm*|rxvt*)
-	PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")$(__stw_svn_status)'
+	PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")'
 	PS1="$PS1\nbash \$ "
     PS1="\[\e]2;\u@\h:\w\a\]$PS1"
 		
@@ -161,7 +150,7 @@ xterm*|rxvt*)
 	fi
     ;;
 *)
-	PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")$(__stw_svn_status)'
+	PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")'
 	PS1="$PS1\nbash \$ "
 	
 	# enable color support of ls and also add handy aliases
