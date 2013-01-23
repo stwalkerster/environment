@@ -15,6 +15,11 @@ $ git clone git://github.com/stwalkerster/environment.git environment
 $ echo ". ~/environment/bashrc" >> ~/.bashrc
 ```
 
+or simply:
+```
+pushd ~; git clone git://github.com/stwalkerster/environment.git environment ; echo ". ~/environment/bashrc" >> ~/.bashrc ; popd
+```
+
 ## Explanation ##
 
 The prompt is changed to the following:
