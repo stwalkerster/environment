@@ -137,7 +137,7 @@ cygwin)
 xterm*|rxvt*)
 	PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")'
 	PS1="$PS1\nbash \$ "
-    PS1="\[\e]2;\u@\h:\w\a\]$PS1"
+    PS1="\[\e]2;\u@\H:\w\a\]$PS1"
 		
 	# enable color support of ls and also add handy aliases
 	if [ -x $(which dircolors) ]; then
