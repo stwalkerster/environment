@@ -184,7 +184,7 @@ alias scrd='~/environment/grabssh; screen -rd'
 
 alias screnum='~/environment/screnum'
 
-alias ssh='source ~/environment/fixssh; ssh -A'
+alias ssh='ssh -A'
 alias fixssh='source ~/environment/fixssh'
 
 alias envupdate='pushd ~/environment/; git pull; source bashrc; popd'
