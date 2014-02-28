@@ -123,50 +123,66 @@ function __stw_get_git_stash_status
         return
 }
 
+function __stw_get_p4_workspace
+{
+	if ! type "p4" &> /dev/null; then
+		return
+	fi
 
+    perforceclient=$(p4 client -o | grep Client: | grep -v \# | cut -f 2)
+    
+    #echo -n "Perforce client: $perforceclient"
 
+    echo -n "[\e[1;33m"
+    echo -n '$(p4 client -o | grep Client: | tail -n 1 | cut -f 2)'
+    echo -n "\e[m]"
+}
 
-# set the prompt 
-PS1='\n\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]'
+export PROMPT_COMMAND='echo "";for i in {1..237};do echo -n "-";done'
+
+# set the main prompt 
+PS1='\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]'
 
 # If this is an xterm set the title
 case "$TERM" in
 cygwin)
-	PS1=$PS1'$(__git_ps1 "[%s:$(__stw_get_git_rev_name)]")\nbash \$ '
-	;;
-xterm*|rxvt*)
-	PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")'
-	PS1="$PS1\nbash \$ "
-    PS1="\[\e]2;\u@\H:\w\a\]$PS1"
-		
-	# enable color support of ls and also add handy aliases
-	if [ -x $(which dircolors) ]; then
-		test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-		alias ls='ls --color=auto'
+    PSLEFT=$PS1
+    PSRIGHT='$(__git_ps1 "[%s:$(__stw_get_git_rev_name)]")'$(__stw_get_p4_workspace)
 
-		alias grep='grep --color=auto'
-		alias fgrep='fgrep --color=auto'
-		alias egrep='egrep --color=auto'
-	fi
+    PS1="$PSLEFT$PSRIGHT"
+
+    # prompt
+    PS1="$PS1\nbash \$ "
+
+    # enable color support of ls and also add handy aliases
+    if [ -x $(which dircolors) ]; then
+        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+        alias ls='ls --color=auto'
+
+        alias grep='grep --color=auto'
+        alias fgrep='fgrep --color=auto'
+        alias egrep='egrep --color=auto'
+    fi
+
     ;;
 *)
-	PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")'
-	PS1="$PS1\nbash \$ "
-	
-	# enable color support of ls and also add handy aliases
-	if [ -x $(which dircolors) ]; then
-		test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-		alias ls='ls --color=auto'
+    # git information
+    PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")'
 
-		alias grep='grep --color=auto'
-		alias fgrep='fgrep --color=auto'
-		alias egrep='egrep --color=auto'
-	fi
+    # prompt
+    PS1="$PS1\nbash \$ "
+
+    # enable color support of ls and also add handy aliases
+    if [ -x $(which dircolors) ]; then
+        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+        alias ls='ls --color=auto'
+
+        alias grep='grep --color=auto'
+        alias fgrep='fgrep --color=auto'
+        alias egrep='egrep --color=auto'
+    fi
     ;;
 esac
-
-
-
 
 # some more ls aliases
 alias ll='ls -l'
