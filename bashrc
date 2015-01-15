@@ -66,19 +66,19 @@ function __stw_git_status
 {
         if [ `__stw_get_git_wd_unstaged` == "1" ]
                 then
-                        echo "\e[1;31m"
+                        echo -ne "\e[1;31m"
                         return
         fi
 
         if [ `__stw_get_git_wd_staged` == "1" ]
                 then
-                        echo "\e[1;33m"
+                        echo -ne "\e[1;33m"
                         return
         fi
 
         if [ `__stw_get_git_wd_untracked` == "1" ]
                 then
-                        echo "\e[1;34m"
+                        echo -ne "\e[1;34m"
                         return
         fi
 
@@ -107,7 +107,7 @@ function __stw_git_numeric_status
         if [ "$OUTPUT" != "[" ]
                 then
                 OUTPUT=$OUTPUT"\e[m]"
-                echo $OUTPUT
+                echo -ne $OUTPUT
         fi
 
         return
@@ -117,7 +117,7 @@ function __stw_get_git_stash_status
 {
         if [ `__stw_get_git_num_stash` != "0" ]
                 then
-                echo "[\e[0;36m$(__stw_get_git_num_stash)\e[m]"
+                echo -ne "[\e[0;36m$(__stw_get_git_num_stash)\e[m]"
         fi
 
         return
