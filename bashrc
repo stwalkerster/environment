@@ -125,21 +125,6 @@ function __stw_get_git_stash_status
 
 function __stw_get_p4_workspace
 {
-	if ! type "p4" &> /dev/null; then
-		return
-	fi
-
-    perforceclient=$(p4 client -o | grep Client: | grep -v \# | cut -f 2)
-    
-    #echo -n "Perforce client: $perforceclient"
-
-    echo -n "[\e[1;33m"
-    echo -n '$(p4 client -o | grep Client: | tail -n 1 | cut -f 2)'
-    echo -n "\e[m]"
-}
-
-function __stw_get_p4_workspace
-{
     which p4 &> /dev/null
     
     if [ $? -eq 1 ]; then
