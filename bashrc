@@ -138,21 +138,65 @@ function __stw_get_p4_workspace
     echo -n "\e[m]"
 }
 
-export PROMPT_COMMAND='echo "";for i in {1..237};do echo -n "-";done'
+function __stw_get_p4_workspace
+{
+    which p4 &> /dev/null
+    
+    if [ $? -eq 1 ]; then
+        return
+    fi
+    
+    p4 client -o &>/dev/null
+    
+    if [ $? -eq 0 ]; then
+        perforceclient=$(p4 client -o 2>/dev/null | grep Client: | grep -v \# | cut -f 2)
+        
+        echo -ne "[\e[1;33m"
+        echo -ne "$perforceclient"
+        echo -ne "\e[m]"
+    fi
+}
 
-# set the main prompt 
-PS1='\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]'
+function __stw_get_real_dir
+{
+    currdir=`pwd`
+    realdir=$(readlink -f "$(pwd)")
+    
+    if [ "$realdir" != "$currdir" ]; then
+        echo -ne "\e[m|\e[1;36m"
+        echo -ne "${realdir/#$HOME/~}"
+        echo -ne "\e[m"
+    fi
+}
+
+function __stw_get_dirstack
+{
+    currdir=`pwd`
+    shortcurdir=$(echo -ne "${currdir/#$HOME/~}")
+    dirstack=$(dirs)
+    
+    if [ "$dirstack" != "$shortcurdir" ]; then
+        echo -ne "\n\e[m[stack: \e[1;35m$dirstack\r[m]"
+    fi
+}
+
+export PROMPT_COMMAND='echo "";for i in `seq 1 $COLUMNS` ;do echo -n "-";done'
+
+# set the main prompt
+PS1A='\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w'
+PS1B='\e[m]'
+#PS1='\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w\e[m]'
 
 # If this is an xterm set the title
 case "$TERM" in
-cygwin)
-    PSLEFT=$PS1
+cygwin|xterm)
+ #   PSLEFT=$PS1
     PSRIGHT='$(__git_ps1 "[%s:$(__stw_get_git_rev_name)]")'$(__stw_get_p4_workspace)
 
-    PS1="$PSLEFT$PSRIGHT"
+    PS1='\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w$(__stw_get_real_dir)\e[m]$(__git_ps1 "[%s:$(__stw_get_git_rev_name)]")$(__stw_get_p4_workspace)$(__stw_get_dirstack)\nbash \$ '
 
     # prompt
-    PS1="$PS1\nbash \$ "
+   # PS1="$PS1\nbash \$ "
 
     # enable color support of ls and also add handy aliases
     if [ -x $(which dircolors) ]; then
