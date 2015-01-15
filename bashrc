@@ -176,7 +176,7 @@ function __stw_get_dirstack
     dirstack=$(dirs)
     
     if [ "$dirstack" != "$shortcurdir" ]; then
-        echo -ne "\n\e[m[stack: \e[1;35m$dirstack\r[m]"
+        echo -ne "\n\e[m[stack: \e[1;35m$dirstack\e[m]"
     fi
 }
 
