@@ -1,0 +1,1 @@
+caption always "%{= bW}screen on %{+b bM}%H%{-}: %2n %{g}%t %{-} %= | %{c}%l%{-} | %D %d %M %Y %{Y}%c"
