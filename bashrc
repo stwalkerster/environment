@@ -19,8 +19,10 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+environmentdir=`dirname ${BASH_SOURCE[0]}`;
+
 # include bash completion for git on the off-chance we don't already have it
-. ~/environment/bash-completion-git
+. $environmentdir/bash-completion-git
 
 function __stw_get_git_rev_name
 {
@@ -206,22 +208,7 @@ esac
 alias ll='ls -l'
 alias la='ls -A'
 
-alias status='git status'
-alias add='git add'
-alias commit='git commit'
-alias push='git push'
-alias pull='git pull'
-alias stash='git stash'
-
-alias scr='~/environment/grabssh; screen -r'
-alias scrd='~/environment/grabssh; screen -rd'
-
-alias screnum='~/environment/screnum'
-
 alias ssh='ssh -A'
-alias fixssh='source ~/environment/fixssh'
-
-alias envupdate='pushd ~/environment/; git pull; source bashrc; popd'
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
