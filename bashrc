@@ -169,7 +169,7 @@ export PROMPT_COMMAND='echo "";for i in `seq 1 $COLUMNS` ;do echo -n "-";done'
 
 # If this is an xterm set the title
 case "$TERM" in
-cygwin|xterm|screen|linux)
+cygwin|xterm|screen|linux|screen.linux)
     PS1='\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w$(__stw_get_real_dir)\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")$(__stw_get_p4_workspace)$(__stw_get_dirstack)\nbash \$ '
 
     # enable color support of ls and also add handy aliases
