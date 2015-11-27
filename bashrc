@@ -175,10 +175,10 @@ cygwin|xterm|screen|linux|screen.linux)
     PromptEnd="\nbash \$ "
 
     if [ $(id -u) -eq 0 ]; then
-        PromptEnd="\n\e[41m\e[97mbash \$\e[m "
+        PromptEnd="\n\e[41m\e[97mbash #\e[m "
     fi
 
-    PS1='\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w$(__stw_get_real_dir)\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")$(__stw_get_p4_workspace)$(__stw_get_dirstack)\nbash \$ '
+    PS1='\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w$(__stw_get_real_dir)\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")$(__stw_get_p4_workspace)$(__stw_get_dirstack)'
     PS1=$PS1$PromptEnd
 
     # enable color support of ls and also add handy aliases
