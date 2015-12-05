@@ -151,7 +151,7 @@ function __stw_get_real_dir
     
     if [ "$realdir" != "$currdir" ]; then
         echo -ne "\e[m|\e[1;36m"
-        echo -ne "${realdir/#$HOME/~}"
+        echo -ne "${realdir/#$HOME/\~}"
         echo -ne "\e[m"
     fi
 }
@@ -159,7 +159,7 @@ function __stw_get_real_dir
 function __stw_get_dirstack
 {
     currdir=`pwd`
-    shortcurdir=$(echo -ne "${currdir/#$HOME/~}")
+    shortcurdir=$(echo -ne "${currdir/#$HOME/\~}")
     dirstack=$(dirs)
     
     if [ "$dirstack" != "$shortcurdir" ]; then
