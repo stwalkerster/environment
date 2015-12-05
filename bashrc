@@ -68,7 +68,7 @@ function __stw_get_dirstack
 
 function __stw_get_username
 {
-    initCol="$ColLCyan"
+    initCol="$ColLGreen"
     
     if [ $EUID -eq 0 ]; then
         initCol="$ColLRed"
