@@ -105,12 +105,13 @@ else
     p4workspaceseg=''
 fi
 
+
+source $environmentdir/git-prompt.sh
+    
 # If this is an xterm set the title
 case "$TERM" in
 cygwin|xterm|screen|linux|screen.linux)
 
-    source $environmentdir/git-prompt.sh
-    
     if [ "$OS" = "Windows_NT" ]; then
         # msys is *really* slow, so we have to make some concessions here    
         export STW_PS1_GITSTATUS="false"
@@ -134,11 +135,8 @@ cygwin|xterm|screen|linux|screen.linux)
 
     ;;
 *)
-    # git information
-    PS1=$PS1'$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")'
-
-    # prompt
-    PS1="$PS1\nbash \$ "
+    # basic prompt
+    PS1='[\t][\u@\H:\w]\nbash \$ '
 
     # enable color support of ls and also add handy aliases
     if [ -x $(which dircolors) ]; then
