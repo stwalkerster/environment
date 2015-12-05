@@ -24,107 +24,6 @@ environmentdir=`dirname ${BASH_SOURCE[0]}`;
 # include bash completion for git on the off-chance we don't already have it
 . $environmentdir/bash-completion-git
 
-function __stw_get_git_rev_name
-{
-        git describe --always 2> /dev/null
-}
-
-function __stw_get_git_wd_unstaged
-{
-        git status 2> /dev/null | sed -e '/Changes not staged for commit:$/!d' | wc -l;
-}
-
-function __stw_get_git_wd_staged
-{
-        git status 2> /dev/null | sed -e '/Changes to be committed:$/!d' | wc -l;
-}
-
-function __stw_get_git_wd_untracked
-{
-        git status 2> /dev/null | sed -e '/Untracked files:$/!d' | wc -l;
-}
-
-function __stw_get_git_num_unstaged
-{
-        git diff --name-only 2> /dev/null | wc -l;
-}
-
-function __stw_get_git_num_staged
-{
-        git diff --name-only --cached 2> /dev/null | wc -l
-}
-
-function __stw_get_git_num_untracked
-{
-        git ls-files -o --exclude-standard 2> /dev/null | wc -l
-}
-
-function __stw_get_git_num_stash
-{
-        git stash list 2> /dev/null | wc -l
-}
-
-function __stw_git_status
-{
-        if [ `__stw_get_git_wd_unstaged` == "1" ]
-                then
-                        echo -ne "\e[1;31m"
-                        return
-        fi
-
-        if [ `__stw_get_git_wd_staged` == "1" ]
-                then
-                        echo -ne "\e[1;33m"
-                        return
-        fi
-
-        if [ `__stw_get_git_wd_untracked` == "1" ]
-                then
-                        echo -ne "\e[1;34m"
-                        return
-        fi
-
-        echo "\e[1;32m"
-}
-
-function __stw_git_numeric_status
-{
-        OUTPUT="["
-
-        if [ `__stw_get_git_num_unstaged` != "0" ]
-                then
-                OUTPUT=$OUTPUT"\e[1;31m$(__stw_get_git_num_unstaged)"
-        fi
-
-        if [ `__stw_get_git_num_staged` != "0" ]
-                then
-                OUTPUT=$OUTPUT"\e[1;33m$(__stw_get_git_num_staged)"
-        fi
-
-        if [ `__stw_get_git_num_untracked` != "0" ]
-                then
-                OUTPUT=$OUTPUT"\e[1;34m$(__stw_get_git_num_untracked)"
-        fi
-
-        if [ "$OUTPUT" != "[" ]
-                then
-                OUTPUT=$OUTPUT"\e[m]"
-                echo -ne $OUTPUT
-        fi
-
-        return
-}
-
-function __stw_get_git_stash_status
-{
-        if [ `__stw_get_git_num_stash` != "0" ]
-                then
-                echo -ne "[\e[0;36m$(__stw_get_git_num_stash)\e[m]"
-        fi
-
-        return
-}
-
 function __stw_get_p4_workspace
 {
     which p4 &> /dev/null
@@ -167,19 +66,61 @@ function __stw_get_dirstack
     fi
 }
 
-export PROMPT_COMMAND='echo "";for i in `seq 1 $COLUMNS` ;do echo -n "-";done'
+function __stw_get_username
+{
+    initCol="$ColLCyan"
+    
+    if [ $EUID -eq 0 ]; then
+        initCol="$ColLRed"
+    fi
+    
+    echo -ne $initCol$USER    
+}
+
+tput colors > /dev/null
+if [ "$?" = "0" ]; then
+    ColLRed="\e[1;31m"
+    ColLYellow="\e[1;33m"
+    ColLGreen="\e[1;32m"
+    ColLBlue="\e[1;34m"
+    ColDPurple="\e[0;35m"
+    ColLCyan="\e[1;36m"
+    ColReset="\e[m"
+    export STW_PS1_GITSTATUS="true"
+else
+    ColLRed=""
+    ColLYellow=""
+    ColLGreen=""
+    ColLBlue=""
+    ColDPurple=""
+    ColLCyan=""
+    ColReset=""
+    export STW_PS1_GITSTATUS="false"
+fi
+
+which p4 &> /dev/null
+if [ $? -eq 0 ]; then
+    p4workspaceseg='$(__stw_get_p4_workspace)'
+else
+    p4workspaceseg=''
+fi
 
 # If this is an xterm set the title
 case "$TERM" in
 cygwin|xterm|screen|linux|screen.linux)
-    PromptEnd="\nbash \$ "
 
-    if [ $(id -u) -eq 0 ]; then
-        PromptEnd="\n\e[41m\e[97mbash #\e[m "
+    source $environmentdir/git-prompt.sh
+    
+    if [ "$OS" = "Windows_NT" ]; then
+        # msys is *really* slow, so we have to make some concessions here    
+        export STW_PS1_GITSTATUS="false"
+        
+        PROMPT_COMMAND="__git_ps1 '\n$ColReset[$ColLRed\t$ColReset][$ColLGreen\$USERDOMAIN\\\\$USERNAME@\H$ColReset:$ColLBlue\w\$(__stw_get_real_dir)$ColReset]' '$p4workspaceseg\$(__stw_get_dirstack)'$'\nbash \$ '"
+    else
+        PROMPT_COMMAND="__git_ps1 '\n$ColReset[$ColLRed\t$ColReset][\$(__stw_get_username)@\H$ColReset:$ColLBlue\w\$(__stw_get_real_dir)$ColReset]' '$p4workspaceseg\$(__stw_get_dirstack)'$'\nbash \$ '"
     fi
 
-    PS1='\e[m[\e[1;31m\t\e[m][\e[1;32m\u@\H\e[m:\e[1;34m\w$(__stw_get_real_dir)\e[m]$(__git_ps1 "[$(__stw_git_status)%s\e[m:\e[0;35m$(__stw_get_git_rev_name)\e[m]$(__stw_git_numeric_status)$(__stw_get_git_stash_status)")$(__stw_get_p4_workspace)$(__stw_get_dirstack)'
-    PS1=$PS1$PromptEnd
+    
 
     # enable color support of ls and also add handy aliases
     if [ -x $(which dircolors) ]; then
