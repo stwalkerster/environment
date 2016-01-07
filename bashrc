@@ -105,9 +105,7 @@ else
     p4workspaceseg=''
 fi
 
-
-source $environmentdir/git-prompt.sh
-    
+   
 # If this is an xterm set the title
 case "$TERM" in
 cygwin|xterm|screen|linux|screen.linux)
@@ -167,3 +165,5 @@ export EDITOR=nano
 export VISUAL=/usr/bin/nano
 export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin:/opt/phabricator/arcanist/bin
 export PYTHONPATH="/usr/local/lib/svn-python":="/usr/local/lib/svn-python/svn":="/usr/local/lib/svn-python/libsvn"
+
+source $environmentdir/git-prompt.sh
