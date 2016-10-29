@@ -155,6 +155,7 @@ alias la='ls -A'
 alias ssh='ssh -A'
 
 alias pls='sudo $(history -p \!\!)'
+alias pup='pushd /erc/puppet; sudo git pull && sudo puppet agent --enable && sudo puppet agent -t; popd'
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
