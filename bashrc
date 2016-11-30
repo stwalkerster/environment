@@ -108,7 +108,7 @@ fi
    
 # If this is an xterm set the title
 case "$TERM" in
-cygwin|xterm|xterm-256color|screen|linux|screen.linux)
+cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
 
     if [ "$OS" = "Windows_NT" ]; then
         # msys is *really* slow, so we have to make some concessions here    
