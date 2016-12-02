@@ -168,7 +168,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-if [ -f ~/.ssh-agent ] then
+if [ -f ~/.ssh-agent ]; then
     . ~/.ssh-agent
 fi
 
