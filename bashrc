@@ -157,6 +157,8 @@ alias ssh='ssh -A'
 alias pls='sudo $(history -p \!\!)'
 alias pup='pushd /etc/puppet; sudo git pull && sudo puppet agent --enable && sudo puppet agent -t; popd'
 
+alias grabagent="echo \"export SSH_AUTH_SOCK='$SSH_AUTH_SOCK'\" > ~/.ssh-agent"
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
