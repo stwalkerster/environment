@@ -157,6 +157,8 @@ alias ssh='ssh -A'
 alias grabagent="echo \"export SSH_AUTH_SOCK='$SSH_AUTH_SOCK'\" > ~/.ssh-agent"
 alias screen='grabagent;screen'
 
+alias gpg='/usr/bin/gpg2'
+
 alias pls='sudo $(history -p \!\!)'
 alias pup='pushd /etc/puppet; sudo git pull && sudo puppet agent --enable && sudo puppet agent -t; popd'
 
