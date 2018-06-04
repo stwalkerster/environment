@@ -11,13 +11,13 @@ In commands, this means:
 
 ```
 $ cd
-$ git clone git://github.com/stwalkerster/environment.git environment
+$ git clone https://phabricator.stwalkerster.co.uk/diffusion/ENV/environment.git environment
 $ echo ". ~/environment/bashrc" >> ~/.bashrc
 ```
 
 or simply:
 ```
-pushd ~; git clone git://github.com/stwalkerster/environment.git environment ; echo ". ~/environment/bashrc" >> ~/.bashrc ; popd
+pushd ~; git clone https://phabricator.stwalkerster.co.uk/diffusion/ENV/environment.git environment ; echo ". ~/environment/bashrc" >> ~/.bashrc ; popd
 ```
 
 ## Explanation ##
