@@ -114,9 +114,9 @@ cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
         # msys is *really* slow, so we have to make some concessions here    
         export STW_PS1_GITSTATUS="false"
         
-        PROMPT_COMMAND="__git_ps1 '\n$ColReset[$ColLRed\t$ColReset][$ColLGreen\$USERDOMAIN\\\\$USERNAME@\H$ColReset:$ColLBlue\w\$(__stw_get_real_dir)$ColReset]' '$p4workspaceseg\$(__stw_get_dirstack)'$'\nbash \$ '"
+        PROMPT_COMMAND="__git_ps1 '\n$ColReset[$ColLRed\t$ColReset][$ColLGreen\$USERDOMAIN\\\\$USERNAME@\H$ColReset:$ColLBlue\w\$(__stw_get_real_dir)$ColReset]' '$p4workspaceseg\$(__stw_get_dirstack)'$'\nbash \\$ '"
     else
-        PROMPT_COMMAND="__git_ps1 '\n$ColReset[$ColLRed\t$ColReset][\$(__stw_get_username)@\H$ColReset:$ColLBlue\w\$(__stw_get_real_dir)$ColReset]' '$p4workspaceseg\$(__stw_get_dirstack)'$'\nbash \$ '"
+        PROMPT_COMMAND="__git_ps1 '\n$ColReset[$ColLRed\t$ColReset][\$(__stw_get_username)@\H$ColReset:$ColLBlue\w\$(__stw_get_real_dir)$ColReset]' '$p4workspaceseg\$(__stw_get_dirstack)'$'\nbash \\$ '"
     fi
 
     
