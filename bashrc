@@ -9,8 +9,8 @@ HISTCONTROL=ignoredups:ignorespace
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=20000
+HISTFILESIZE=20000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -174,9 +174,22 @@ if [ -f ~/.ssh-agent ]; then
     . ~/.ssh-agent
 fi
 
-export EDITOR=nano
-export VISUAL=/usr/bin/nano
+editorPriority="nano pico vim vi emacs ex ed"
+for app in $editorPriority; do 
+    appPath=$(which $app)
+    if [[ $? -eq 0 ]]; then
+        export EDITOR=$appPath
+        export VISUAL=$appPath
+        break
+    fi
+done
+
+alias nano=$EDITOR
+
 export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin:/opt/phabricator/arcanist/bin
 export PYTHONPATH="/usr/local/lib/svn-python":="/usr/local/lib/svn-python/svn":="/usr/local/lib/svn-python/libsvn"
 
 source $environmentdir/git-prompt.sh
+
+# disable XON/XOFF for Ctrl-S forward-history search, only for interactive shells
+[[ $- == *i* ]] && stty -ixon
