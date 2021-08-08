@@ -23,7 +23,7 @@ shopt -s checkwinsize
 [[ $- == *i* ]] && stty -ixon
 
 # capture the current folder for later use
-environmentdir=$(dirname "${BASH_SOURCE[0]}");
+environmentdir=$(readlink -f $(dirname "${BASH_SOURCE[0]}"));
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -209,6 +209,16 @@ for app in $editorPriority; do
 done
 
 alias nano=$EDITOR
+
+############################################################################
+# dotfiles deployment
+#
+
+function stw-deploy-dotfiles() {
+    rm ~/.nanorc ~/.screenrc
+    ln -s ${environmentdir}/nanorc ~/.nanorc
+    ln -s ${environmentdir}/screenrc ~/.screenrc
+}
 
 ############################################################################
 # domain-specific configuration
