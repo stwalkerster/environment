@@ -1,0 +1,9 @@
+#!/bin/bash
+
+defaultBranch=$(git config --default master --get init.defaultBranch)
+defaultRemote=$(git config --default master --get init.defaultRemote)
+
+git checkout $defaultBranch
+git remote update $defaultRemote
+git branch --merged | grep -Pv "^\\* |${defaultBranch}" | xargs -r git branch -d
+git remote prune $defaultRemote

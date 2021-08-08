@@ -152,7 +152,7 @@ cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
 
     if [ "$OS" = "Windows_NT" ]; then
         # msys is *really* slow, so we have to make some concessions here
-        
+
         # disable super-fancy prompt
         export STW_PS1_GITSTATUS="false"
         ps1_timesegment='\t'
@@ -161,7 +161,7 @@ cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
         ps1_p4segment=''
         ps1_stacksegment=''
     fi
-    
+
     # set up the two halves of the prompt
     ps1a="\n$ColReset[${ColLRed}${ps1_timesegment}${ColReset}][${ps1_usersegment}:${ColLBlue}${ps1_pwdsegment}${ColReset}]"
     ps1b="${ps1_p4segment}${ps1_stacksegment}\nbash \\$ "
@@ -274,4 +274,13 @@ if [ -f ~/.ssh-agent ]; then
     . ~/.ssh-agent
 fi
 
-export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games:/var/lib/gems/1.8/bin
+export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games
+
+if [[ -d /var/lib/gems/1.8/bin ]]; then
+    export PATH=${PATH}:/var/lib/gems/1.8/bin
+    echo "DEPRECATED: adding /var/lib/gems/1.8/bin to PATH"
+fi
+
+if [[ -d ${environmentdir}/git-commands ]]; then
+    export PATH=${PATH}:${environmentdir}/git-commands
+fi
