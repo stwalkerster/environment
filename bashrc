@@ -53,6 +53,7 @@ tput colors > /dev/null
 if [ "$?" = "0" ]; then
     ColLRed="\e[1;31m"
     ColLYellow="\e[1;33m"
+    ColDYellow="\e[0;33m"
     ColLGreen="\e[1;32m"
     ColLBlue="\e[1;34m"
     ColDPurple="\e[0;35m"
@@ -132,6 +133,17 @@ function __stw_ps1_tz
     fi
 }
 
+function __stw_ps1_environment
+{
+    if [[ ! -z $PS1ENV ]]; then
+        if [[ ${1:-0} -eq 0 ]]; then
+            echo -ne "[${ColDYellow}${PS1ENV}${ColReset}] "
+        else
+            echo -ne "[${PS1ENV}] "
+        fi
+    fi
+}
+
 # If this is an xterm(ish), enable the fancy prompts
 case "$TERM" in
 cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
@@ -149,6 +161,7 @@ cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
     ps1_pwdsegment='\w$(__stw_ps1_readlink)'
     ps1_usersegment='$(__stw_ps1_username)@\H'${ColReset}
     ps1_stacksegment='$(__stw_ps1_dirstack)'
+    ps1_envsegment='$(__stw_ps1_environment)'
 
     if [ "$OS" = "Windows_NT" ]; then
         # msys is *really* slow, so we have to make some concessions here
@@ -160,14 +173,15 @@ cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
         ps1_usersegment=$ColLGreen'${USERDOMAIN}\\\\${USERNAME}@\H'${ColReset}
         ps1_p4segment=''
         ps1_stacksegment=''
+        ps1_envsegment=''
     fi
 
     # set up the two halves of the prompt
     ps1a="\n$ColReset[${ColLRed}${ps1_timesegment}${ColReset}][${ps1_usersegment}:${ColLBlue}${ps1_pwdsegment}${ColReset}]"
-    ps1b="${ps1_p4segment}${ps1_stacksegment}\nbash \\$ "
+    ps1b="${ps1_p4segment}${ps1_stacksegment}\n${ps1_envsegment}bash \\$ "
 
     # set up the title bar of the terminal window
-    PROMPT_COMMAND='printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
+    PROMPT_COMMAND='printf "\033]0;%s%s@%s:%s\007" "$(__stw_ps1_environment 1)" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
 
     if [[ $STW_PS1_USEGITPROMPT = "true" ]]; then
         # we have a git prompt available, format PS1 via the git command.
