@@ -140,6 +140,13 @@ function __stw_ps1_tz
     fi
 }
 
+function __stw_ps1_tf_workspace
+{
+    if [[ -r ${PWD}/.terraform/environment ]]; then
+        echo -ne "[${ColLYellow}$(cat ${PWD}/.terraform/environment)${ColReset}]"
+    fi
+}
+
 function __stw_ps1_environment
 {
     flag=0
@@ -178,6 +185,16 @@ cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
         ps1_p4segment=''
     fi
 
+    # check for Terraform; if present then include the perforce section
+    which terraform &> /dev/null
+    if [ $? -eq 0 ]; then
+        ps1_tfsegment='$(__stw_ps1_tf_workspace)'
+    else
+        ps1_tfsegment=''
+    fi
+
+
+
     # set up the fancy bits of the prompt
     ps1_timesegment='\t$(__stw_ps1_tz)'
     ps1_pwdsegment='\w$(__stw_ps1_readlink)'
@@ -194,13 +211,14 @@ cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
         ps1_pwdsegment='\w'
         ps1_usersegment=$ColLGreen'${USERDOMAIN}\\\\${USERNAME}@\H'${ColReset}
         ps1_p4segment=''
+        ps1_tfsegment=''
         ps1_stacksegment=''
         ps1_envsegment=''
     fi
 
     # set up the two halves of the prompt
     ps1a="\n$ColReset[${ColLRed}${ps1_timesegment}${ColReset}][${ps1_usersegment}:${ColLBlue}${ps1_pwdsegment}${ColReset}]"
-    ps1b="${ps1_p4segment}${ps1_stacksegment}\n${ps1_envsegment}\s \\$ "
+    ps1b="${ps1_p4segment}${ps1_tfsegment}${ps1_stacksegment}\n${ps1_envsegment}\s \\$ "
 
     # set up the title bar of the terminal window
     PROMPT_COMMAND='printf "\033]0;%s%s@%s:%s\007" "$(__stw_ps1_environment 1)" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
