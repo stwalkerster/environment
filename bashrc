@@ -142,13 +142,28 @@ function __stw_ps1_tz
 
 function __stw_ps1_environment
 {
+    flag=0
+
+    if [[ ! -z $AWSUME_PROFILE ]]; then
+        if [[ ${1:-0} -eq 0 ]]; then
+            echo -ne "[AWS:${ColDYellow}${AWSUME_PROFILE}${ColReset}]"
+        else
+            echo -ne "[AWS:${AWSUME_PROFILE}]"
+        fi
+
+        flag=1
+    fi
+
     if [[ ! -z $PS1ENV ]]; then
         if [[ ${1:-0} -eq 0 ]]; then
-            echo -ne "[${ColDYellow}${PS1ENV}${ColReset}] "
+            echo -ne "[${ColDYellow}${PS1ENV}${ColReset}]"
         else
-            echo -ne "[${PS1ENV}] "
+            echo -ne "[${PS1ENV}]"
         fi
+        flag=1
     fi
+
+    if [[ $flag -eq 1 ]]; then echo -n " "; fi
 }
 
 # If this is an xterm(ish), enable the fancy prompts
@@ -185,7 +200,7 @@ cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
 
     # set up the two halves of the prompt
     ps1a="\n$ColReset[${ColLRed}${ps1_timesegment}${ColReset}][${ps1_usersegment}:${ColLBlue}${ps1_pwdsegment}${ColReset}]"
-    ps1b="${ps1_p4segment}${ps1_stacksegment}\n${ps1_envsegment}bash \\$ "
+    ps1b="${ps1_p4segment}${ps1_stacksegment}\n${ps1_envsegment}\s \\$ "
 
     # set up the title bar of the terminal window
     PROMPT_COMMAND='printf "\033]0;%s%s@%s:%s\007" "$(__stw_ps1_environment 1)" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
@@ -200,7 +215,7 @@ cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
     ;;
 *)
     # basic prompt only. :(
-    PS1='[\u@\H:\w]\nbash \$ '
+    PS1='[\u@\H:\w]\n\s \$ '
     ;;
 esac
 
