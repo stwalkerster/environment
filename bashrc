@@ -1,6 +1,13 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# MacOS defence
+if [[ "$(uname -s)" == "Darwin" ]]; then
+   # assumes homebrew packages coreutils and findutils are installed. If not, you probably want to install them anyway
+   eval "$(/opt/homebrew/bin/brew shellenv)"
+   export PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
+fi
+
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
@@ -289,6 +296,8 @@ which sl &> /dev/null
 if [ $? -ne 0 ]; then
     alias sl='echo Steam Locomotive not available, did you mean "ls"?'
 fi
+
+alias tf=terraform
 
 ############################################################################
 # Misc
