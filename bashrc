@@ -331,6 +331,8 @@ if [ $? -ne 0 ]; then
 fi
 
 alias tf=terraform
+alias tfp='terraform plan -out tfplan'
+alias tfa='terraform apply tfplan'
 
 ############################################################################
 # Misc
