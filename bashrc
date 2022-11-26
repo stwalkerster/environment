@@ -330,9 +330,12 @@ if [ $? -ne 0 ]; then
     alias sl='echo Steam Locomotive not available, did you mean "ls"?'
 fi
 
+# Terraform trickery
+complete -C terraform terraform tf
 alias tf=terraform
 alias tfp='terraform plan -out tfplan'
 alias tfa='terraform apply tfplan'
+alias tfaaa='terraform apply --auto-approve'
 
 ############################################################################
 # Misc
