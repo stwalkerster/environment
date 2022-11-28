@@ -58,15 +58,15 @@ fi
 # setup colour codes
 tput colors > /dev/null
 if [ "$?" = "0" ]; then
-    ColLRed="\e[1;31m"
-    ColLYellow="\e[1;33m"
-    ColDYellow="\e[0;33m"
-    ColLGreen="\e[1;32m"
-    ColLBlue="\e[1;34m"
-    ColDPurple="\e[0;35m"
-    ColLPurple="\e[1;35m"
-    ColLCyan="\e[1;36m"
-    ColReset="\e[m"
+    ColLRed="\001\e[1;31m\002"
+    ColLYellow="\001\e[1;33m\002"
+    ColDYellow="\001\e[0;33m\002"
+    ColLGreen="\001\e[1;32m\002"
+    ColLBlue="\001\e[1;34m\002"
+    ColDPurple="\001\e[0;35m\002"
+    ColLPurple="\001\e[1;35m\002"
+    ColLCyan="\001\e[1;36m\002"
+    ColReset="\001\e[m\002"
     export STW_PS1_GITSTATUS="true"
 else
     ColLRed=""
