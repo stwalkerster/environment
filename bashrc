@@ -351,11 +351,6 @@ fi
 
 export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games
 
-if [[ -d /var/lib/gems/1.8/bin ]]; then
-    export PATH=${PATH}:/var/lib/gems/1.8/bin
-    echo "DEPRECATED: adding /var/lib/gems/1.8/bin to PATH"
-fi
-
 if [[ -d ${environmentdir}/git-commands ]]; then
     export PATH=${PATH}:${environmentdir}/git-commands
 fi
