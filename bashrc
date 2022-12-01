@@ -349,7 +349,7 @@ if [ -f ~/.ssh-agent ]; then
     . ~/.ssh-agent
 fi
 
-export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games
+export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games:$HOME/.local/bin
 
 if [[ -d ${environmentdir}/git-commands ]]; then
     export PATH=${PATH}:${environmentdir}/git-commands
