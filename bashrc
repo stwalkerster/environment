@@ -273,9 +273,10 @@ alias nano=$EDITOR
 #
 
 function stw-deploy-dotfiles() {
-    rm ~/.nanorc ~/.screenrc
+    rm ~/.nanorc ~/.screenrc ~/.gitconfig
     ln -s ${environmentdir}/nanorc ~/.nanorc
     ln -s ${environmentdir}/screenrc ~/.screenrc
+    ln -s ${environmentdir}/gitconfig ~/.gitconfig
 }
 
 ############################################################################
