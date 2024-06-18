@@ -1,17 +1,17 @@
 [user]
-	name = Simon Walker
-	email = github@stwalkerster.co.uk
-	signingkey = 6EDA5D8760CC091E3B9F650810DA657D9612BE5C
+    name = Simon Walker
+    email = github@stwalkerster.co.uk
+    signingkey = 6EDA5D8760CC091E3B9F650810DA657D9612BE5C
 [merge]
-	tool = kdiff3
+    tool = kdiff3
 [diff]
-	guitool = kdiff3
+    guitool = kdiff3
 [difftool "kdiff3"]
-	path = /usr/bin/kdiff3
+    path = /usr/bin/kdiff3
 [gpg]
-	program = gpg2
+    program = gpg2
 [core]
-	autocrlf = input
+    autocrlf = input
 [pull]
     ff = only
 [rebase]
@@ -19,3 +19,5 @@
 [alias]
     logtree = log --oneline --graph
     lt = log --oneline --graph
+[commit]
+    gpgsign = true
