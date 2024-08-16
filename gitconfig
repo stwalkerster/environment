@@ -21,3 +21,5 @@
     lt = log --oneline --graph
 [commit]
     gpgsign = true
+[init]
+    defaultBranch = main
