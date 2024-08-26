@@ -9,7 +9,7 @@
 [difftool "kdiff3"]
     path = /usr/bin/kdiff3
 [gpg]
-    program = gpg2
+    program = gpg
 [core]
     autocrlf = input
 [pull]
@@ -24,3 +24,14 @@
     gpgsign = true
 [init]
     defaultBranch = main
+[rerere]
+    enabled = true
+[fetch]
+    prune = true
+[help]
+    autocorrect = 30
+
+[include]
+    path = ~/.gitconfig-local
+[includeIf "gitdir:~/Projects/"]
+    path = ~/Projects/gitconfig
