@@ -9,10 +9,6 @@ on:
 
 jobs:
   build-deb:
-    strategy:
-      matrix:
-        distro: [all]
-
     runs-on: ubuntu-latest
 
     permissions:
@@ -30,16 +26,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Apply distro-specific changes
-        run: |
-          .github/distro.sh \
-            --distro=${{ matrix.distro }}
-
       - name: Build package
         run: |
-          .github/build.sh \
+          debian/build.sh \
             --name=stwalkerster-environment \
-            --distro=${{ matrix.distro }}
+            --distro=all
 
       - name: Lintian
         run: lintian --suppress-tags no-changelog,no-copyright-file *.deb
@@ -65,7 +56,7 @@ jobs:
           deb-s3 upload \
               --arch=all \
               --bucket=stwalkerster-098014529583-apt \
-              --codename=${{ matrix.distro }} \
+              --codename=all \
               --prefix="staging/" \
               --visibility=private \
               --preserve-versions \
@@ -78,7 +69,7 @@ jobs:
           deb-s3 upload \
               --arch=all \
               --bucket=stwalkerster-098014529583-apt \
-              --codename=${{ matrix.distro }} \
+              --codename=all \
               --prefix="production/" \
               --visibility=private \
               --preserve-versions \
