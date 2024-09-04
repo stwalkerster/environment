@@ -36,7 +36,7 @@ jobs:
         run: lintian --suppress-tags no-changelog,no-copyright-file *.deb
 
       - name: Configure staging AWS credentials
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/master'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: eu-west-1
@@ -50,7 +50,7 @@ jobs:
           role-to-assume: arn:aws:iam::098014529583:role/apt-repo/apt-repo-production
 
       - name: Upload package to staging repo
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/master'
         run: |
           sudo gem install deb-s3
           deb-s3 upload \
