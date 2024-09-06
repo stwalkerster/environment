@@ -16,6 +16,7 @@
     ff = only
 [rebase]
     autosquash = true
+    updateRefs = true
 [alias]
     logtree = log --oneline --graph
     lt = log --oneline --graph
@@ -30,6 +31,10 @@
     prune = true
 [help]
     autocorrect = 30
+[column]
+    ui = auto
+[branch]
+    sort = -committerdate
 
 [include]
     path = ~/.gitconfig-local
