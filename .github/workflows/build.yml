@@ -35,7 +35,7 @@ jobs:
             --distro=all
 
       - name: Lintian
-        run: lintian --suppress-tags no-changelog,no-copyright-file *.deb
+        run: lintian --suppress-tags no-changelog,no-copyright-file --fail-on=warning,error *.deb
 
       - name: Configure staging AWS credentials
         if: github.ref == 'refs/heads/master'
