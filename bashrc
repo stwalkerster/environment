@@ -342,6 +342,7 @@ alias tfp='terraform plan -out tfplan'
 alias tfa='terraform apply tfplan'
 alias tfv='terraform validate'
 alias tff='terraform fmt'
+alias tfc='terraform console'
 alias tfaaa='terraform apply --auto-approve'
 
 ############################################################################
