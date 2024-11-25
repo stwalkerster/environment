@@ -6,6 +6,10 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
    # assumes homebrew packages coreutils and findutils are installed. If not, you probably want to install them anyway
    eval "$(/opt/homebrew/bin/brew shellenv)"
    export PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
+
+   if [[ -x /opt/homebrew/bin/ggrep ]]; then
+      alias grep=/opt/homebrew/bin/ggrep
+   fi
 fi
 
 # don't put duplicate lines in the history. See bash(1) for more options
