@@ -349,6 +349,8 @@ alias tff='terraform fmt'
 alias tfc='terraform console'
 alias tfaaa='terraform apply --auto-approve'
 
+export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
+
 ############################################################################
 # Misc
 #
