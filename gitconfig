@@ -21,6 +21,7 @@
     logtree = log --oneline --graph
     lt = log --oneline --graph
     l = log --graph --pretty='%C(auto)%h %G? %C(blue)%ai %C(cyan)%C(bold)%aN %C(auto)/ %C(green)%ci %C(bold)%cN %C(auto)%d %n  %C(bold)%s%n'
+    s = status
 [commit]
     gpgsign = true
 [init]
