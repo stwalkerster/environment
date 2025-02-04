@@ -22,7 +22,9 @@
     lt = log --oneline --graph
     l = log --graph --pretty='%C(auto)%h %G? %C(blue)%ai %C(cyan)%C(bold)%aN %C(auto)/ %C(green)%ci %C(bold)%cN %C(auto)%d %n  %C(bold)%s%n'
     s = status
-    fixup = "!git log --color=always --pretty='%C(auto)%h %C(green)%ci %C(bold)%an %C(auto)%d %s' -n 50 --no-merges | fzf --ansi | cut -d ' ' -f 1 | xargs -o git commit --fixup"
+    fixup = "!git log --color=always --pretty='%C(auto)%h %C(green)%ci %C(bold)%an %C(auto)%d %s' -n 50 --no-merges | fzf --ansi | cut -d ' ' -f 1 | xargs -o git commit --no-gpg-sign --fixup"
+    ri = rebase -i
+    fpush = push --force-with-lease
 [commit]
     gpgsign = true
 [init]
