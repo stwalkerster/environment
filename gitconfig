@@ -2,21 +2,8 @@
     name = Simon Walker
     email = github@stwalkerster.co.uk
     signingkey = 6EDA5D8760CC091E3B9F650810DA657D9612BE5C
-[merge]
-    tool = kdiff3
-[diff]
-    guitool = kdiff3
-[difftool "kdiff3"]
-    path = /usr/bin/kdiff3
-[gpg]
-    program = gpg
 [core]
     autocrlf = input
-[pull]
-    ff = only
-[rebase]
-    autosquash = true
-    updateRefs = true
 [alias]
     logtree = log --oneline --graph
     lt = log --oneline --graph
@@ -25,20 +12,33 @@
     fixup = "!git log --color=always --pretty='%C(auto)%h %C(green)%ci %C(bold)%an %C(auto)%d %s' -n 50 --no-merges | fzf --ansi | cut -d ' ' -f 1 | xargs -o git commit --no-gpg-sign --fixup"
     ri = rebase -i
     fpush = push --force-with-lease
-[commit]
-    gpgsign = true
-[init]
-    defaultBranch = main
-[rerere]
-    enabled = true
-[fetch]
-    prune = true
-[help]
-    autocorrect = 30
-[column]
-    ui = auto
 [branch]
     sort = -committerdate
+[column]
+    ui = auto
+[commit]
+    gpgsign = true
+[diff]
+    guitool = kdiff3
+[difftool "kdiff3"]
+    path = /usr/bin/kdiff3
+[fetch]
+    prune = true
+[gpg]
+    program = gpg
+[help]
+    autocorrect = 30
+[init]
+    defaultBranch = main
+[merge]
+    tool = kdiff3
+[pull]
+    ff = only
+[rebase]
+    autosquash = true
+    updateRefs = true
+[rerere]
+    enabled = true
 
 [include]
     path = ~/.gitconfig-local
