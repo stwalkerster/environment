@@ -19,26 +19,37 @@
 [commit]
     gpgsign = true
 [diff]
+    algorithm = histogram
+    colorMoved = plain
     guitool = kdiff3
+    mnemonicPrefix = true
+    renames = true
 [difftool "kdiff3"]
     path = /usr/bin/kdiff3
 [fetch]
+    all = true
     prune = true
+    pruneTags = true
 [gpg]
     program = gpg
 [help]
-    autocorrect = 30
+    autocorrect = prompt
 [init]
     defaultBranch = main
 [merge]
     tool = kdiff3
+    conflictStyle = zdiff3
 [pull]
     ff = only
 [rebase]
     autosquash = true
+    autostash = true
     updateRefs = true
 [rerere]
+    autoUpdate = true
     enabled = true
+[tag]
+    sort = version:refname
 
 [include]
     path = ~/.gitconfig-local
