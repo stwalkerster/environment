@@ -12,3 +12,5 @@ ln -s ${PWD}/gitconfig ~/.gitconfig
 ln -s ${PWD}/bashrc ~/.bashrc
 
 gpg --locate-external-keys github@stwalkerster.co.uk
+# github web ui key
+curl https://github.com/web-flow.gpg | gpg --import -
