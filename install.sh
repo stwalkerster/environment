@@ -11,3 +11,4 @@ ln -s ${PWD}/screenrc ~/.screenrc
 ln -s ${PWD}/gitconfig ~/.gitconfig
 ln -s ${PWD}/bashrc ~/.bashrc
 
+gpg --locate-external-keys github@stwalkerster.co.uk
