@@ -41,6 +41,8 @@
     conflictStyle = zdiff3
 [pull]
     ff = only
+[push]
+    default = upstream
 [rebase]
     autosquash = true
     autostash = true
