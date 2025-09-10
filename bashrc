@@ -161,6 +161,17 @@ function __stw_ps1_environment
 {
     flag=0
 
+    jobcount=0
+    if [[  -gt 0 ]]; then
+        if [[ 0 -eq 0 ]]; then
+            echo -ne "[\001\e[1;36m\002%:\001\e[m\002]"
+        else
+            echo -ne "[%:]"
+        fi
+
+        flag=1
+    fi
+
     if [[ ${1:-0} -eq 0 ]]; then
         which terraform &> /dev/null
         if [ $? -eq 0 ]; then
