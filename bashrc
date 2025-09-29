@@ -164,7 +164,7 @@ function __stw_ps1_environment
     jobcount=$(jobs | grep -Pv 'tput colors|git ls-files' | wc -l)
     if [[ $jobcount -gt 0 ]]; then
         if [[ ${1:-0} -eq 0 ]]; then
-            echo -ne "[${ColLCyan}%:${jobcount}%{ColReset}]"
+            echo -ne "[${ColLCyan}%:${jobcount}${ColReset}]"
         else
             echo -ne "[%:${jobcount}]"
         fi
