@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Ensure fzf is installed
+if ! command -v fzf >/dev/null 2>&1; then
+  echo "fzf is not installed. Please install it to use this plugin."
+  exit 1
+fi
+
+# Get current context
+base_context=$(kubectl config current-context)
+
+if [[ -z "$base_context" ]]; then
+  echo "No current context found. Please set a current context first."
+  exit 1
+fi
+
+cluster=$(kubectl config view -o jsonpath="{.contexts[?(@.name==\"$base_context\")].context.cluster}")
+user=$(kubectl config view -o jsonpath="{.contexts[?(@.name==\"$base_context\")].context.user}")
+
+if [[ -z "$cluster" || -z "$user" ]]; then
+  echo "Could not extract cluster/user from context '$base_context'."
+  exit 1
+fi
+
+echo "Select the namespace in $cluster to create a new context for:"
+namespace=$(kubectl get namespaces -o jsonpath="{.items[*].metadata.name}" | tr ' ' '\n' | fzf)
+
+if [[ -z "$namespace" ]]; then
+  echo "No namespace selected."
+  exit 1
+fi
+
+new_context="$namespace@$cluster"
+
+kubectl config set-context "$new_context" \
+  --cluster="$cluster" \
+  --user="$user" \
+  --namespace="$namespace"
+
+echo "✅ Context '$new_context' created with namespace '$namespace' in cluster '$cluster'."
+
+read -p "Switch to '$new_context' now? (y/n): " switch_now
+if [[ "$switch_now" == "y" ]]; then
+  kubectl config use-context "$new_context"
+fi

@@ -15,6 +15,7 @@
     fpush = push --force-with-lease
     sw = !"git switch $(git for-each-ref --format='%(refname)' refs/heads/  refs/remotes/ | sed -re 's#^(refs/remotes/[^/]+/|refs/heads/)##' | sort -u | fzf)"
     co = checkout
+    ll = !"f(){ remote=\"${1:-origin}\";  (git ls-remote --refs -h ${remote} | cut -f 2 | sed -re \"s@refs/heads@${remote}@\"; git branch | sed -re 's@[*+]@@') | xargs git l ; }; f"
 [branch]
     sort = -committerdate
 [column]

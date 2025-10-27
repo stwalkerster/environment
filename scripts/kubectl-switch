@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Ensure fzf is installed
+if ! command -v fzf >/dev/null 2>&1; then
+  echo "fzf is not installed. Please install it to use this plugin."
+  exit 1
+fi
+
+# Get current context
+current=$(kubectl config current-context)
+
+# Prompt user to select a context
+echo "Select a context to switch to:"
+selected=$(kubectl config get-contexts -o name | fzf --header="Current context: $current")
+
+if [[ -z "$selected" ]]; then
+  echo "No context selected."
+  exit 1
+fi
+
+# Switch context
+kubectl config use-context "$selected"

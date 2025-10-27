@@ -203,6 +203,8 @@ function __stw_ps1_environment
     if [[ $flag -eq 1 ]]; then echo -n " "; fi
 }
 
+# ps1_history_command='history -a; history -n; '
+
 # If this is an xterm(ish), enable the fancy prompts
 case "$TERM" in
 cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
@@ -240,7 +242,7 @@ cygwin|xterm|xterm-256color|screen|linux|screen.linux|screen.xterm-256color)
     ps1b="${ps1_p4segment}${ps1_stacksegment}\n${ps1_envsegment}\s \\$ "
 
     # set up the title bar of the terminal window
-    PROMPT_COMMAND='printf "\033]0;%s%s@%s:%s\007" "$(__stw_ps1_environment 1)" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
+    PROMPT_COMMAND="${ps1_history_command}"'printf "\033]0;%s%s@%s:%s\007" "$(__stw_ps1_environment 1)" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
 
     if [[ $STW_PS1_USEGITPROMPT = "true" ]]; then
         # we have a git prompt available, format PS1 via the git command.
@@ -373,6 +375,46 @@ fi
 
 export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games:$HOME/.local/bin
 
-if [[ -d ${environmentdir}/git-commands ]]; then
-    export PATH=${PATH}:${environmentdir}/git-commands
+if [[ -d ${environmentdir}/scripts ]]; then
+    export PATH=${PATH}:${environmentdir}/scripts
+fi
+
+############################################################################
+# fzf Ctrl-R replacement for bash (deduplicates history keeping the most recent entry)
+
+__fzf_history__() {
+  local selected hist
+
+  # Build history: strip leading history numbers, reverse so newest entries come first,
+  # then remove duplicate commands keeping the first (i.e. the newest) occurrence.
+  if command -v tac >/dev/null 2>&1; then
+    hist=$(
+      history \
+      | sed 's/^[[:space:]]*[0-9]\+[[:space:]]*//' \
+      | tac \
+      | awk '!seen[$0]++'
+    )
+  else
+    # portable reverse using awk (for systems without tac, e.g. macOS)
+    hist=$(
+      history \
+      | sed 's/^[[:space:]]*[0-9]\+[[:space:]]*//' \
+      | awk '{ line[NR] = $0 } END { for (i = NR; i >= 1; i--) print line[i] }' \
+      | awk '!seen[$0]++'
+    )
+  fi
+
+  # Launch fzf. Use current prompt contents as the initial query.
+  selected=$(printf '%s\n' "$hist" | fzf --height 40% --min-height 10 --reverse --tiebreak=index --ansi --query="$READLINE_LINE")
+
+  # If the user selected something, replace the current readline line and move cursor to end.
+  if [ -n "$selected" ]; then
+    READLINE_LINE=$selected
+    READLINE_POINT=${#READLINE_LINE}
+  fi
+}
+
+if command -v fzf &>/dev/null; then
+    # Bind Ctrl-R to the function (overrides default Ctrl-R).
+    bind -x '"\C-r": __fzf_history__'
 fi
