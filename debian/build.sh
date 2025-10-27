@@ -57,7 +57,7 @@ cat debian/control/control | envsubst > ${FQNAME}/DEBIAN/control
 # Do standard install things
 
 mkdir -p ${FQNAME}/usr/share/${NAME}/
-cp -a bash-completion-git bashrc git-commands git-prompt.sh gitconfig nanorc screenrc ${FQNAME}/usr/share/${NAME}/
+cp -a bash-completion-git bashrc scripts git-prompt.sh gitconfig nanorc screenrc ${FQNAME}/usr/share/${NAME}/
 
 mkdir -p ${FQNAME}/usr/share/doc/${NAME}/
 cp LICENCE.txt ${FQNAME}/usr/share/doc/${NAME}/copyright
