@@ -191,6 +191,18 @@ function __stw_ps1_environment
         flag=1
     fi
 
+    if [[ ! -z $VIRTUAL_ENV ]]; then
+        VenvData=$(basename $(readlink -f ${VIRTUAL_ENV}/..))
+
+        if [[ ${1:-0} -eq 0 ]]; then
+            echo -ne "[venv:${ColDYellow}${VenvData}${ColReset}]"
+        else
+            echo -ne "[venv:${VenvData}]"
+        fi
+        flag=1
+    fi
+
+
     if [[ ! -z $PS1ENV ]]; then
         if [[ ${1:-0} -eq 0 ]]; then
             echo -ne "[${ColDYellow}${PS1ENV}${ColReset}]"
@@ -204,6 +216,7 @@ function __stw_ps1_environment
 }
 
 # ps1_history_command='history -a; history -n; '
+ps1_history_command=''
 
 # If this is an xterm(ish), enable the fancy prompts
 case "$TERM" in
