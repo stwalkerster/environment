@@ -192,7 +192,7 @@ function __stw_ps1_environment
     fi
 
     if [[ ! -z $VIRTUAL_ENV ]]; then
-        VenvData=$(basename $(readlink -f ${VIRTUAL_ENV}/..))
+        VenvData=$(basename $(readlink -m ${VIRTUAL_ENV}/..))
 
         if [[ ${1:-0} -eq 0 ]]; then
             echo -ne "[venv:${ColDYellow}${VenvData}${ColReset}]"
