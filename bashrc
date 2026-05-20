@@ -157,6 +157,41 @@ function __stw_ps1_tz
     fi
 }
 
+_STW_KUBE_CACHE="/tmp/.stw_kube_ps1_$$"
+
+function __stw_ps1_kube() {
+    local kubeconfig="${KUBECONFIG:-$HOME/.kube/config}"
+    local mtime="" f t
+
+    while IFS= read -r f; do
+        [[ -f "$f" ]] || continue
+        t=$(stat -c '%Y' "$f" 2>/dev/null || stat -f '%m' "$f" 2>/dev/null)
+        [[ -n "$t" && ( -z "$mtime" || "$t" -gt "$mtime" ) ]] && mtime="$t"
+    done < <(tr ':' '\n' <<< "$kubeconfig")
+
+    [[ -z "$mtime" ]] && return
+
+    local cached_mtime="" cached_ctx="" cached_ns=""
+    if [[ -f "$_STW_KUBE_CACHE" ]]; then
+        { IFS= read -r cached_mtime; IFS= read -r cached_ctx; IFS= read -r cached_ns; } < "$_STW_KUBE_CACHE"
+    fi
+
+    if [[ "$mtime" != "$cached_mtime" ]]; then
+        cached_ctx=$(kubectl config current-context 2>/dev/null)
+        cached_ns=$(kubectl config view --minify -o jsonpath='{..namespace}' 2>/dev/null)
+        cached_ns="${cached_ns:-default}"
+        printf '%s\n%s\n%s\n' "$mtime" "$cached_ctx" "$cached_ns" > "$_STW_KUBE_CACHE"
+    fi
+
+    [[ -z "$cached_ctx" ]] && return
+
+    if [[ ${1:-0} -eq 0 ]]; then
+        echo -ne "[k8s:${ColLCyan}${cached_ctx}${ColReset}/${ColDPurple}${cached_ns}${ColReset}]"
+    else
+        echo -ne "[k8s:${cached_ctx}/${cached_ns}]"
+    fi
+}
+
 function __stw_ps1_environment
 {
     flag=0
@@ -188,6 +223,13 @@ function __stw_ps1_environment
         else
             echo -ne "[AWS:${AWSUME_PROFILE}]"
         fi
+        flag=1
+    fi
+
+    local kubeinfo
+    kubeinfo=$(__stw_ps1_kube ${1:-0})
+    if [[ -n "$kubeinfo" ]]; then
+        echo -ne "$kubeinfo"
         flag=1
     fi
 
