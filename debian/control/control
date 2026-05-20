@@ -4,6 +4,7 @@ Package: stwalkerster-environment
 Version: ${VERSION}
 Maintainer: Simon Walker <simon@stwalkerster.co.uk>
 Depends: git, fzf
+Recommends: kubectx, kubectl
 Architecture: all
 Description: stwalkerster's environment configuration
  This package contains the bash environment settings for stwalkerster
