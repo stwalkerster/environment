@@ -1,11 +1,53 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+############################################################################
+# PATH management
+#
+
+function path_append() {
+    local dir="$1"
+    [[ -d "$dir" ]] || return
+    [[ ":$PATH:" == *":$dir:"* ]] || export PATH="$PATH:$dir"
+}
+
+function path_prepend() {
+    local dir="$1"
+    [[ -d "$dir" ]] || return
+    local rest
+    rest=$(printf '%s' "$PATH" | tr ':' '\n' | grep -Fxv "$dir" | tr '\n' ':')
+    rest="${rest%:}"
+    export PATH="$dir${rest:+:$rest}"
+}
+
+STW_PATH_PRIORITY=(
+    "$HOME/bin"
+    "$HOME/.local/bin"
+)
+
+function path_reorder() {
+    local priority=("$@" "${STW_PATH_PRIORITY[@]}")
+    local new_path=""
+    for dir in "${priority[@]}"; do
+        [[ -d "$dir" ]] || continue
+        [[ ":$new_path:" == *":$dir:"* ]] && continue
+        new_path="${new_path:+$new_path:}$dir"
+    done
+    while IFS= read -r dir; do
+        [[ -z "$dir" ]] && continue
+        [[ -d "$dir" ]] || continue
+        [[ ":$new_path:" == *":$dir:"* ]] && continue
+        new_path="${new_path:+$new_path:}$dir"
+    done < <(printf '%s' "$PATH" | tr ':' '\n')
+    export PATH="$new_path"
+}
+
 # MacOS defence
 if [[ "$(uname -s)" == "Darwin" ]]; then
    # assumes homebrew packages coreutils and findutils are installed. If not, you probably want to install them anyway
    eval "$(/opt/homebrew/bin/brew shellenv)"
-   export PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
+   path_prepend "$(brew --prefix)/opt/findutils/libexec/gnubin"
+   path_prepend "$(brew --prefix)/opt/coreutils/libexec/gnubin"
 
    if [[ -x /opt/homebrew/bin/ggrep ]]; then
       alias grep=/opt/homebrew/bin/ggrep
@@ -370,7 +412,7 @@ if [[ $fqdnhash = "ce016ed63c3ed4238554bce0be9f5c0ce5cdd471d2ad23edd7215cb3ed7ba
     # set this if it's not already set by the user
     if [[ "$ORACLE_HOME" == "" ]]; then
         export ORACLE_HOME=/export/users/oracle/product/19.7.0
-        export PATH=$PATH:$ORACLE_HOME/bin
+        path_append "$ORACLE_HOME/bin"
     fi
 
     # fix; this is broken by other bashrc configurations
@@ -421,25 +463,6 @@ alias tfaaa='terraform apply --auto-approve'
 export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 
 ############################################################################
-# PATH management
-#
-
-function path_append() {
-    local dir="$1"
-    [[ -d "$dir" ]] || return
-    [[ ":$PATH:" == *":$dir:"* ]] || export PATH="$PATH:$dir"
-}
-
-function path_prepend() {
-    local dir="$1"
-    [[ -d "$dir" ]] || return
-    local rest
-    rest=$(printf '%s' "$PATH" | tr ':' '\n' | grep -Fxv "$dir" | tr '\n' ':')
-    rest="${rest%:}"
-    export PATH="$dir${rest:+:$rest}"
-}
-
-############################################################################
 # Misc
 #
 
@@ -447,11 +470,9 @@ if [ -f ~/.ssh-agent ]; then
     . ~/.ssh-agent
 fi
 
-export PATH=$HOME/bin:$PATH:/usr/local/bin:/usr/local/games:$HOME/.local/bin
-
-if [[ -d ${environmentdir}/scripts ]]; then
-    export PATH=${PATH}:${environmentdir}/scripts
-fi
+path_append "/usr/local/bin"
+path_append "/usr/local/games"
+path_append "${environmentdir}/scripts"
 
 ############################################################################
 # fzf Ctrl-R replacement for bash (deduplicates history keeping the most recent entry)
