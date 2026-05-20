@@ -228,7 +228,7 @@ function __stw_ps1_kube() {
     [[ -z "$cached_ctx" ]] && return
 
     if [[ ${1:-0} -eq 0 ]]; then
-        echo -ne "[k8s:${ColLCyan}${cached_ctx}${ColReset}/${ColDPurple}${cached_ns}${ColReset}]"
+        echo -ne "[k8s:${ColLCyan}${cached_ctx}${ColReset}/${ColLPurple}${cached_ns}${ColReset}]"
     else
         echo -ne "[k8s:${cached_ctx}/${cached_ns}]"
     fi
