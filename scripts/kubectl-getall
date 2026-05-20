@@ -1,3 +1,63 @@
 #!/bin/bash
 
-exec kubectl get $(kubectl api-resources --verbs=list -o name --namespaced=true | paste -sd ',' -) "$@"
+# Parse options using getopt
+TEMP=$(getopt -o 'h' --long 'all-scopes,help' -n 'kubectl getall' -- "$@")
+
+if [ $? -ne 0 ]; then
+    echo 'Error parsing arguments' >&2
+    exit 1
+fi
+
+# Note the quotes around "$TEMP": they are essential!
+eval set -- "$TEMP"
+unset TEMP
+
+# Process parsed options
+INCLUDE_CLUSTER=false
+
+while true; do
+    case "$1" in
+        '--all-scopes')
+            INCLUDE_CLUSTER=true
+            shift
+            ;;
+        '-h'|'--help')
+            cat << EOF
+Usage: kubectl getall [OPTIONS] [-- KUBECTL_ARGS...]
+
+Options:
+  --all-scopes    Include cluster-scoped resources (not just namespaced)
+  -h, --help      Show this help message
+
+Separate native kubectl arguments with --.
+
+Examples:
+  kubectl getall --all-scopes
+  kubectl getall -- -n my-namespace
+  kubectl getall --all-scopes -- -n my-namespace
+  kubectl getall --all-scopes -- -o wide
+EOF
+            exit 0
+            ;;
+        '--')
+            shift
+            break
+            ;;
+        *)
+            echo 'Internal error!' >&2
+            exit 1
+            ;;
+    esac
+done
+
+# Build resource list
+if [ "$INCLUDE_CLUSTER" = true ]; then
+    # Get both namespaced and cluster-scoped resources
+    RESOURCES=$(kubectl api-resources --verbs=list -o name | paste -sd ',' -)
+else
+    # Get only namespaced resources (original behavior)
+    RESOURCES=$(kubectl api-resources --verbs=list -o name --namespaced=true | paste -sd ',' -)
+fi
+
+# Execute kubectl get with the resources and remaining arguments
+exec kubectl get "$RESOURCES" "$@"
