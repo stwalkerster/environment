@@ -379,6 +379,25 @@ alias tfaaa='terraform apply --auto-approve'
 export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 
 ############################################################################
+# PATH management
+#
+
+function path_append() {
+    local dir="$1"
+    [[ -d "$dir" ]] || return
+    [[ ":$PATH:" == *":$dir:"* ]] || export PATH="$PATH:$dir"
+}
+
+function path_prepend() {
+    local dir="$1"
+    [[ -d "$dir" ]] || return
+    local rest
+    rest=$(printf '%s' "$PATH" | tr ':' '\n' | grep -Fxv "$dir" | tr '\n' ':')
+    rest="${rest%:}"
+    export PATH="$dir${rest:+:$rest}"
+}
+
+############################################################################
 # Misc
 #
 
