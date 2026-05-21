@@ -200,6 +200,7 @@ function __stw_ps1_tz
 }
 
 _STW_KUBE_CACHE="/tmp/.stw_kube_ps1_$$"
+STW_KUBE_ALERT_NS=("kube-system")
 
 function __stw_ps1_kube() {
     local kubeconfig="${KUBECONFIG:-$HOME/.kube/config}"
@@ -227,8 +228,14 @@ function __stw_ps1_kube() {
 
     [[ -z "$cached_ctx" ]] && return
 
+    local nsCol="$ColLGreen"
+    local ns
+    for ns in "${STW_KUBE_ALERT_NS[@]}"; do
+        [[ "$cached_ns" == "$ns" ]] && nsCol="$ColLRed" && break
+    done
+
     if [[ ${1:-0} -eq 0 ]]; then
-        echo -ne "[k8s:${ColLCyan}${cached_ctx}${ColReset}/${ColLPurple}${cached_ns}${ColReset}]"
+        echo -ne "[k8s:${ColLCyan}${cached_ctx}${ColReset}/${nsCol}${cached_ns}${ColReset}]"
     else
         echo -ne "[k8s:${cached_ctx}/${cached_ns}]"
     fi
