@@ -112,6 +112,7 @@ if [ "$?" = "0" ]; then
     ColDPurple="\001\e[0;35m\002"
     ColLPurple="\001\e[1;35m\002"
     ColLCyan="\001\e[1;36m\002"
+    ColWhiteOnRed="\001\e[1;37;41m\002"
     ColReset="\001\e[m\002"
     export STW_PS1_GITSTATUS="true"
 else
@@ -122,6 +123,7 @@ else
     ColDPurple=""
     ColLPurple=""
     ColLCyan=""
+    ColWhiteOnRed=""
     ColReset=""
     export STW_PS1_GITSTATUS="false"
 fi
@@ -235,7 +237,9 @@ function __stw_ps1_kube() {
     done
 
     if [[ ${1:-0} -eq 0 ]]; then
-        echo -ne "[k8s:${ColLCyan}${cached_ctx}${ColReset}/${nsCol}${cached_ns}${ColReset}]"
+        local labelCol=""
+        [[ -n "${KUBECTX_ISOLATED_SHELL:-}" ]] && labelCol="$ColWhiteOnRed"
+        echo -ne "[${labelCol}k8s${ColReset}:${ColLCyan}${cached_ctx}${ColReset}/${nsCol}${cached_ns}${ColReset}]"
     else
         echo -ne "[k8s:${cached_ctx}/${cached_ns}]"
     fi
