@@ -270,19 +270,19 @@ function __stw_ps1_environment
         fi
     fi
 
+    local kubeinfo
+    kubeinfo=$(__stw_ps1_kube ${1:-0})
+    if [[ -n "$kubeinfo" ]]; then
+        echo -ne "$kubeinfo"
+        flag=1
+    fi
+
     if [[ ! -z $AWSUME_PROFILE ]]; then
         if [[ ${1:-0} -eq 0 ]]; then
             echo -ne "[AWS:${ColDYellow}${AWSUME_PROFILE}${ColReset}]"
         else
             echo -ne "[AWS:${AWSUME_PROFILE}]"
         fi
-        flag=1
-    fi
-
-    local kubeinfo
-    kubeinfo=$(__stw_ps1_kube ${1:-0})
-    if [[ -n "$kubeinfo" ]]; then
-        echo -ne "$kubeinfo"
         flag=1
     fi
 
