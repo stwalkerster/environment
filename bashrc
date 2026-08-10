@@ -279,7 +279,15 @@ function __stw_ps1_environment
 
     if [[ ! -z $AWSUME_PROFILE ]]; then
         if [[ ${1:-0} -eq 0 ]]; then
-            echo -ne "[AWS:${ColDYellow}${AWSUME_PROFILE}${ColReset}]"
+            awsumeProfileColour="${ColDYellow}"
+
+            if [[ ! -z $AWSUME_EXPIRATION ]]; then
+                if [[ $(date -u --date="${AWSUME_EXPIRATION}" +%s) -le $(date -u +%s) ]]; then
+                    awsumeProfileColour="${ColLRed}\e[9m"
+                fi
+            fi
+
+            echo -ne "[AWS:${awsumeProfileColour}${AWSUME_PROFILE}${ColReset}]"
         else
             echo -ne "[AWS:${AWSUME_PROFILE}]"
         fi
