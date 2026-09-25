@@ -478,9 +478,19 @@ __git_ps1 ()
 			w=$(git diff-files --numstat | wc -l)
 			i=$(git diff-index --cached --numstat HEAD | wc -l)
 		fi
-        
+
         if [ "true" = "$STW_PS1_GITSTATUS" ]; then
-            s="$(git rev-parse --verify --quiet refs/stash 2>/dev/null| wc -l)"
+            # Stash count
+            if git reflog exists refs/stash; then
+                s="$(git reflog refs/stash 2>/dev/null | wc -l)"
+            else
+                s=0
+            fi
+
+            # unresolved conflicts (unmerged index entries)
+            if [ -n "$(git ls-files --unmerged 2>/dev/null)" ]; then
+                r="$r|CONFLICT"
+            fi
         else
             s=0
         fi
@@ -509,7 +519,7 @@ __git_ps1 ()
     # i = index
     # s = stash
     # u = untracked
-    
+
     tput colors > /dev/null
     if [ "$?" = "0" ]; then
         colred="\e[1;31m"
@@ -528,10 +538,9 @@ __git_ps1 ()
         colcya=""
         reset=""
     fi
-    
-    
+
     has_modified=$(($w+$i+$u))
-    
+
     colour=$colgrn
     if [ $w -gt 0 ]; then
         colour=$colred
@@ -540,21 +549,27 @@ __git_ps1 ()
     elif [ $u -gt 0 ]; then
         colour=$colblu
     fi;
-    
+
     printf_format="$colour$b$reset:$colpur$short_sha$reset"
-    
+
+    # r = in-progress operation (merge, rebase, cherry-pick, etc) and conflict marker
+    if [ -n "$r" ]; then
+        # colour each state, but leave the "|" separators uncoloured
+        printf_format=$printf_format"${r//|/$reset|$colred}$reset"
+    fi
+
     if [ "$STW_PS1_GITSTATUS" = "true" ]; then
         if [ $has_modified -gt 0 ]; then
             printf_format=$printf_format"|$colred$w$reset|$colyel$i$reset|$colblu$u$reset"
         fi
-        
+
         if [ $s -gt 0 ]; then
             printf_format=$printf_format"|$colcya$s$reset"
         fi
     fi
-    
+
     printf_format="[$printf_format]"
-    
+
 	local f="$w$i$s$u"
 	local gitstring="$c$b${f:+$z$f}$r$p"
 
