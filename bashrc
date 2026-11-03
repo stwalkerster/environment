@@ -294,6 +294,23 @@ function __stw_ps1_environment
         flag=1
     fi
 
+    if [[ ! -z $AWS_VAULT ]]; then
+        if [[ ${1:-0} -eq 0 ]]; then
+            awsVaultProfileColour="${ColDYellow}"
+
+            if [[ ! -z $AWS_CREDENTIAL_EXPIRATION ]]; then
+                if [[ $(date -u --date="${AWS_CREDENTIAL_EXPIRATION}" +%s) -le $(date -u +%s) ]]; then
+                    awsVaultProfileColour="${ColLRed}\e[9m"
+                fi
+            fi
+
+            echo -ne "[${ColWhiteOnRed}AWS${ColReset}:${awsVaultProfileColour}${AWS_VAULT}${ColReset}]"
+        else
+            echo -ne "[AWS:${AWS_VAULT}]"
+        fi
+        flag=1
+    fi
+
     if [[ ! -z $VIRTUAL_ENV ]]; then
         VenvData=$(basename $(readlink -m ${VIRTUAL_ENV}/..))
 
